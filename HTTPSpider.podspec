@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/isxq/HTTPSpider.git", :tag => s.version }
 
   s.source_files = "Source/*.swift"
-  s.ios.deployment_target     = :ios, "9.0"
+  s.platform = :ios, "9.0"
 
   s.author             = { "申小强" => "shen_x_q@163.com" }
   s.social_media_url   = "http://isxq.github.io"
