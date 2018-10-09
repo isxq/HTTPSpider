@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/isxq/HTTPSpider"
   s.source       = { :git => "https://github.com/isxq/HTTPSpider.git", :tag => s.version }
 
-  s.swift_version = '4.2'
+  swift_version = '4.2'
 
   s.source_files = "Source/*.swift"
   s.platform = :ios, "9.0"
