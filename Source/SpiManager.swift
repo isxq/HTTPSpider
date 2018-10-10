@@ -18,18 +18,21 @@ open class SpiManager {
         public static var startImmediately: Bool?
         public static var allowsCellucerAccess: Bool?
         public static var timeoutInterval: TimeInterval?
+        public static var encoderType: SpiEncoderType?
         
         /// 静态方法，设置 Bat 全局配置
         public static func setConfig(baseURL: String = "",
                                      httpHeaders: HTTPHeaders? = nil,
                                      startImmediately: Bool = true,
                                      allowsCellucerAccess: Bool = true,
-                                     timeoutInterval: TimeInterval = 60) {
+                                     timeoutInterval: TimeInterval = 60,
+                                     encoderType: SpiEncoderType = .url) {
             self.baseURL = baseURL
             self.httpHeaders = httpHeaders
             self.startImmediately = startImmediately
             self.allowsCellucerAccess = allowsCellucerAccess
             self.timeoutInterval = timeoutInterval
+            self.encoderType = encoderType
         }
     }
     

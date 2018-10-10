@@ -8,8 +8,19 @@
 
 import Foundation
 
+
+public enum SpiEncoderType {
+    case url
+    case json
+}
+
 /// 负责 URL 的参数编码
-public struct URLEncoder {
+
+public protocol SpiEncoder {
+    func encode(_ originalRequest: URLRequest, with parameters: Parameters?) throws -> URLRequest
+}
+
+public struct URLEncoder: SpiEncoder {
     
     // MARK: - 编码方式及值定义
     
@@ -96,12 +107,12 @@ public struct URLEncoder {
     ///     - method:           请求方式
     /// - throws: 编码过程中遇到的错误
     /// - returns: 编码后的 `URLRequest` 实例
-    public func encode(_ originalRequest: URLRequest, parameters: Parameters?, method: HTTPMethod) throws -> URLRequest {
+    public func encode(_ originalRequest: URLRequest, with parameters: Parameters?) throws -> URLRequest {
         var request = originalRequest
         guard let parameters = parameters else { return request }
-        if encodesParametersInURL(with: method) {
+        if encodesParametersInURL(with: HTTPMethod(rawValue: (request.httpMethod ?? "GET"))!) {
             guard let url = request.url else {
-                throw SpiError.parameterEncodingFalied(reason: .missingURL)
+                throw SpiError.parameterEncodingFailed(reason: .missingURL)
             }
             if var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false),
                 !parameters.isEmpty {
@@ -214,6 +225,57 @@ public struct URLEncoder {
         default:
             return false
         }
+    }
+}
+
+public struct JSONEncoder: SpiEncoder {
+    
+    public static var `default`: JSONEncoder { return JSONEncoder() }
+    
+    public static var prettyPrinted: JSONEncoder { return JSONEncoder(options: .prettyPrinted) }
+    
+    public let options: JSONSerialization.WritingOptions
+    
+    public init(options: JSONSerialization.WritingOptions = []) {
+        self.options = options
+    }
+    
+    public func encode(_ originalRequest: URLRequest, with parameters: Parameters?) throws -> URLRequest {
+        var request = originalRequest
+        guard let parameters = parameters else { return request }
+        
+        do {
+            let data = try JSONSerialization.data(withJSONObject: parameters, options: options)
+            
+            if request.value(forHTTPHeaderField: "Content-Type") == nil {
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            }
+            
+            request.httpBody = data
+        } catch {
+            throw SpiError.parameterEncodingFailed(reason: .jsonEncodingFailed(error))
+        }
+        
+        return request
+    }
+    
+    public func encode(_ originalRequest: URLRequest, withJSONObject jsonObject: Any? = nil) throws -> URLRequest {
+        var urlRequest = originalRequest
+        guard let jsonObject = jsonObject else { return urlRequest }
+        
+        do {
+            let data = try JSONSerialization.data(withJSONObject: jsonObject, options: options)
+            
+            if urlRequest.value(forHTTPHeaderField: "Content-Type") == nil {
+                urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            }
+            
+            urlRequest.httpBody = data
+        } catch {
+            throw SpiError.parameterEncodingFailed(reason: .jsonEncodingFailed(error))
+        }
+        
+        return urlRequest
     }
 }
 

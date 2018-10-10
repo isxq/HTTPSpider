@@ -62,8 +62,14 @@ open class Spi {
             
             features?.forEach{ $0.config(&request) }
             
-            let encoder = URLEncoder()
-            request = try! encoder.encode(request, parameters: parameters, method: target.method)
+            var encoder: SpiEncoder!
+            switch target.encoderType {
+            case .url:
+                encoder = URLEncoder()
+            case .json:
+                encoder = JSONEncoder()
+            }
+            request = try! encoder.encode(request, with: parameters)
             return .success(request)
         } catch {
             return .failure(error)

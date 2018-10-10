@@ -22,6 +22,7 @@ public enum SpiError: Error {
     /// - missingURL:      无可用URL
     public enum ParameterEncodingFailureReason {
         case missingURL
+        case jsonEncodingFailed(Error)
     }
     
     public enum ResponseValidationFailureReason {
@@ -41,7 +42,7 @@ public enum SpiError: Error {
     }
     
     case invalidURL(baseURL: String, path: String)
-    case parameterEncodingFalied(reason: ParameterEncodingFailureReason)
+    case parameterEncodingFailed(reason: ParameterEncodingFailureReason)
     case responseValidationFailed(reason: ResponseValidationFailureReason)
     case responseSerializationFailed(reason: ResponseSerializationFailureReason)
 }

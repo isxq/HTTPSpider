@@ -33,6 +33,9 @@ public protocol SpiTarget {
     
     /// 生成请求后是否立即进行请求，默认返回 Bat 中配置的静态变量
     var startImmediately: Bool {get}
+    
+    ///编码类型
+    var encoderType: SpiEncoderType {get}
 }
 
 //MARK: - extensions
@@ -56,6 +59,10 @@ extension SpiTarget {
     
     public var startImmediately: Bool {
         return SpiManager.config.startImmediately ?? true
+    }
+    
+    public var encoderType: SpiEncoderType {
+        return SpiManager.config.encoderType ?? .url
     }
 }
 
