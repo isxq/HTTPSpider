@@ -14,10 +14,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        Spi(Api.post).send().responseJSON { (response) in
+        Spi(Api.post).send().response( jsonPath: ["json", "other"]) { (response: DataResponse<String>) in
             switch response.result{
-            case let .success(json):
-                print(json)
+            case let .success(str):
+                print(str)
             case let .failure(error):
                 print(error)
             }

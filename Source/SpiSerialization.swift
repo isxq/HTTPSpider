@@ -77,21 +77,25 @@ extension SpiDataRequest {
                 if let data = self.delegate.data{
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: [.allowFragments]) as? [String: Any]{
-                            var subJson: [String: Any]? = json
-                            if let jsonPath = jsonPath {
-                                jsonPath.forEach({ (key) in
-                                    guard subJson != nil else {
-                                        return
-                                    }
-                                    subJson = subJson![key] as? [String: Any]
-                                })
-                            }
-                            if let subJson = subJson {
-                                let decoder = JSONDecoder()
-                                let data = try JSONSerialization.data(withJSONObject: subJson, options: [.prettyPrinted])
-                                let value = try decoder.decode(T.self, from: data)
-                                result = .success(value)
-                                
+                            
+                            var jsonValue: Any? = json
+                            jsonPath?.forEach({ (key) in
+                                if let subJson = jsonValue as? [String: Any]{
+                                    jsonValue = subJson[key]
+                                }
+                            })
+                            
+                            if jsonValue != nil {
+                                if let dicValue = jsonValue as? [String: Any]{
+                                    let decoder = JSONDecoder()
+                                    let data = try JSONSerialization.data(withJSONObject: dicValue, options: .prettyPrinted)
+                                    let value = try decoder.decode(T.self, from: data)
+                                    result = .success(value)
+                                } else if let value = jsonValue as? T {
+                                    result = .success(value)
+                                } else {
+                                    result = .failure(SpiError.responseSerializationFailed(reason: .canNotFindDataForJsonPath))
+                                }
                             } else {
                                 result = .failure(SpiError.responseSerializationFailed(reason: .canNotFindDataForJsonPath))
                             }
