@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "HTTPSpider"
-  s.version      = "0.1.6"
+  s.version      = "0.1.7"
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.summary      = "Clear HTTP Networking in Swift"
   s.homepage     = "https://github.com/isxq/HTTPSpider"
