@@ -14,12 +14,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        Spi(Api.post).send().response( jsonPath: ["json", "other"]) { (response: DataResponse<String>) in
+        Spi(Api.post).send().response(jsonPath: ["json","user","name"], checkPath: ["json","ret"], checkValue: "0", errorPath: ["json","msg"]) { (response: DataResponse<String>) in
             switch response.result{
-            case let .success(str):
+            case .success(let str):
                 print(str)
-            case let .failure(error):
-                print(error)
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }
@@ -50,7 +50,7 @@ extension Api: SpiTarget{
     var parameters: Parameters? {
         switch self {
         case .get: return ["user": ["name": "yahaha", "age": 100], "other":"hehe"]
-        case .post: return ["user": ["name": "yahaha", "age": 100], "other":"hehe"]
+        case .post: return ["ret": "-1", "msg": "not", "user": ["name": "yahaha", "age": 100], "other":"hehe"]
         }
     }
     

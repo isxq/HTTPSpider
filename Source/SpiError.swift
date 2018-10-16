@@ -31,6 +31,8 @@ public enum SpiError: Error {
         case missingContentType(acceptableContentTypes: [String])
         case unacceptableContentType(acceptableContentTypes: [String], responseContentType: String)
         case unacceptableStatusCode(code: Int)
+        case resultCheckError(message: String)
+        case resultCheckNotFind
     }
     
     public enum ResponseSerializationFailureReason {
@@ -39,6 +41,7 @@ public enum SpiError: Error {
         case transformError
         case canNotFindDataForJsonPath
         case jsonCanNotEncode
+        case canNotReadCodableType
     }
     
     case invalidURL(baseURL: String, path: String)
