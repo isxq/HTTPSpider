@@ -97,16 +97,20 @@ extension SpiDataRequest {
     /// 获取json
     func getjson(from data: Data?) throws -> [String: Any] {
         if let data = data {
-            do {
-                let  object = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-                if let json = object as? [String: Any]{
-                    return json
-                } else {
-                    throw SpiError.responseSerializationFailed(reason: .jsonIsNotADictionary)
+            if data.count > 0 {
+                do {
+                    let  object = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                    if let json = object as? [String: Any]{
+                        return json
+                    } else {
+                        throw SpiError.responseSerializationFailed(reason: .jsonIsNotADictionary)
+                    }
+                    
+                } catch  {
+                    throw SpiError.responseSerializationFailed(reason: .jsonSerializationFailed(error))
                 }
-                
-            } catch  {
-                throw SpiError.responseSerializationFailed(reason: .jsonSerializationFailed(error))
+            } else {
+                throw SpiError.responseSerializationFailed(reason: .dataLengthIsZero)
             }
         } else {
             throw SpiError.responseSerializationFailed(reason: .dataIsNil)

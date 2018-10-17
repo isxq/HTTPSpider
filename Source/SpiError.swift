@@ -53,6 +53,7 @@ public enum SpiError: Error {
         case dataIsNil
         case jsonIsNotADictionary
         case jsonSerializationFailed(Error)
+        case dataLengthIsZero
     }
     
     case invalidURL(baseURL: String, path: String)
@@ -176,6 +177,8 @@ extension SpiError.ResponseSerializationFailureReason: LocalizedError{
             return "Response Serialization Failed: \(error.localizedDescription)"
         case .jsonIsNotADictionary:
             return "The Serialization Result is not a Dictionary"
+        case .dataLengthIsZero:
+            return "The return data length was zero"
         }
     }
 }
