@@ -92,19 +92,33 @@ extension SpiRequest {
     
     func resume() {
         guard let task = task else { return }
-        
         if startTime == nil { startTime = CFAbsoluteTimeGetCurrent()}
         task.resume()
+        NotificationCenter.default.post(
+            name: Notification.Name.Task.DidResume,
+            object: self,
+            userInfo: [Notification.Key.Task: task]
+        )
     }
     
     func suspend() {
         guard let task = task else { return }
         task.suspend()
+        NotificationCenter.default.post(
+            name: Notification.Name.Task.DidSuspend,
+            object: self,
+            userInfo: [Notification.Key.Task: task]
+        )
     }
     
     func cancel() {
         guard let task = task else { return }
         task.cancel()
+        NotificationCenter.default.post(
+            name: Notification.Name.Task.DidCancel,
+            object: self,
+            userInfo: [Notification.Key.Task: task]
+        )
     }
 }
 
@@ -161,4 +175,27 @@ open class SpiDownloadRequest: SpiRequest {
     
 }
 
+extension SpiRequest: CustomStringConvertible {
+    public var description: String{
+        var info: String = ""
+        info = info
+            + "URL: \((request?.url.debugDescription)!)\n"
+            + "TASK: \(task?.taskIdentifier ?? -1)\n"
+        return info
+    }
+}
 
+extension SpiRequest: CustomDebugStringConvertible{
+    
+    public var debugDescription: String {
+        var info: String = ""
+        info = info
+            + "URL: \((request?.url.debugDescription)!)\n"
+            + "TASK: \(task?.taskIdentifier ?? -1)\n"
+            + "METHOD: \(request?.httpMethod ?? "GET")\n"
+            + (spi.target.encoderType == .json ?
+                "PARAMS: \((request?.httpBody != nil ? try? JSONSerialization.jsonObject(with: (request?.httpBody)!, options: .mutableLeaves) : "nil") ?? "nil")\n"
+                : "")
+        return info
+    }
+}

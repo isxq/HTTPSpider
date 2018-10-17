@@ -56,6 +56,8 @@ public struct DataResponse<Value> {
     
     public var value: Value? { return result.value }
     
+    public var spiError: SpiError? { return result.error as? SpiError }
+    
     public var error: Error? { return result.error }
     
     var _metrics: AnyObject?

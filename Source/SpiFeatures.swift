@@ -12,7 +12,6 @@ public enum SpiFeature: Hashable {
     
     case cache(URLCache?, URLRequest.CachePolicy?)
     case trust([String: ServerTrustPolicy])
-   
     
     var featureValue: String {
         switch self {

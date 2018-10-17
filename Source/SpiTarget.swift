@@ -36,6 +36,7 @@ public protocol SpiTarget {
     
     ///编码类型
     var encoderType: SpiEncoderType {get}
+
 }
 
 //MARK: - extensions
@@ -64,6 +65,7 @@ extension SpiTarget {
     public var encoderType: SpiEncoderType {
         return SpiManager.config.encoderType ?? .url
     }
+    
 }
 
 extension SpiTarget{

@@ -26,6 +26,7 @@
 		81C092D7216C3EA700A251CC /* ServerTrustPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C092C7216C3EA700A251CC /* ServerTrustPolicy.swift */; };
 		81C09330216C419D00A251CC /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C0932F216C419D00A251CC /* Tests.swift */; };
 		81C09332216C419D00A251CC /* HTTPSpider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81C09292216C3D4700A251CC /* HTTPSpider.framework */; };
+		81C8D5582176D234006E2368 /* SpiNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C8D5572176D234006E2368 /* SpiNotifications.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		81C0932D216C419D00A251CC /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		81C0932F216C419D00A251CC /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		81C09331216C419D00A251CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		81C8D5572176D234006E2368 /* SpiNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpiNotifications.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +121,7 @@
 				81C092C1216C3EA700A251CC /* SpiTaskDelegate.swift */,
 				81C092B8216C3EA600A251CC /* SpiTimeline.swift */,
 				81C092C5216C3EA700A251CC /* SpiValidation.swift */,
+				81C8D5572176D234006E2368 /* SpiNotifications.swift */,
 				81C092B3216C3E1F00A251CC /* Supporting Files */,
 			);
 			path = Source;
@@ -260,6 +263,7 @@
 				81C092C9216C3EA700A251CC /* SpiRequest.swift in Sources */,
 				81C092D4216C3EA700A251CC /* SpiSerialization.swift in Sources */,
 				81C092D3216C3EA700A251CC /* SpiResult.swift in Sources */,
+				81C8D5582176D234006E2368 /* SpiNotifications.swift in Sources */,
 				81C092D2216C3EA700A251CC /* SpiEncoder.swift in Sources */,
 				81C092C8216C3EA700A251CC /* SpiTimeline.swift in Sources */,
 				81C092D7216C3EA700A251CC /* ServerTrustPolicy.swift in Sources */,
