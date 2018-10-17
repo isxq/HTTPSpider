@@ -49,7 +49,7 @@ extension SpiDataRequest {
         delegate.queue.addOperation {
             (queue ?? DispatchQueue.main).async {
                 var result: SpiResult<[String: Any]>!
-                if let error = self.error {
+                if let error = self.delegate.error {
                     result = .failure(error)
                 } else {
                     do {
@@ -75,7 +75,7 @@ extension SpiDataRequest {
         delegate.queue.addOperation {
             (queue ?? DispatchQueue.main).async {
                 var jsonResult: SpiResult<[String: Any]>!
-                if let error = self.error {
+                if let error = self.delegate.error {
                     jsonResult = .failure(error)
                 } else {
                     do {
