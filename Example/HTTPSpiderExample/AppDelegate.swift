@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        SpiManager.config.setConfig(baseURL: "https://httpbin.org", encoderType: .json)
+        SpiManager.config.setConfig(baseURL: "http://192.168.0.109:88/V1.0/wtmsapp", timeoutInterval: 5, encoderType: .json)
         return true
     }
 

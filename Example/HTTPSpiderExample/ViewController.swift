@@ -15,20 +15,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        Spi(Api.post).send().response(tranform: { (json) -> String in
-            if let value = json["json"] as? [String: Any], let ret = value["ret"] as? String, ret == "0" {
-                if let str = value["other"] as? String {
-                    return str
-                }
-                return "error0"
-            } else {
-                return "error1"
-            }
-        }) { (response) in
+        Spi(Api.post).send().response{(response: DataResponse<[User]>) in
             switch response.result{
             case .success(let value):
                 print(value)
             case .failure(let error):
+                print("-------")
                 print(error.localizedDescription)
             }
         }
@@ -60,11 +52,57 @@ extension Api: SpiTarget{
     var parameters: Parameters? {
         switch self {
         case .get: return ["user": ["name": "yahaha", "age": 100], "other":"hehe"]
-        case .post: return ["ret": "-1", "msg": "not hahahaha", "user": ["name": "yahaha", "age": 100], "other":"hehe"]
+        case .post: return ["ret": "0",
+                            "msg": "not hahahaha",
+                            "users": [
+                                ["Name": "yahaha", "age": 100],
+                                ["Name": "yahaha", "age": 100],
+                                ["Name": "yahaha", "age": 100]],
+                            "other":"hehe"]
         }
     }
     
     var debug: Bool {
         return true
     }
+}
+
+
+struct User: Codable {
+    var Name: String?
+    var age: String?
+}
+
+
+extension SpiDataRequest {
+    
+    enum SelfError: Error{
+        case error
+    }
+    
+    @discardableResult
+    func response<T: Codable>(queue: OperationQueue? = nil, completionHandler: @escaping (DataResponse<T>) -> Void) -> Self {
+        response(tranform: { (json) -> T in
+            if let value = json["json"] as? [String: Any], let ret = value["ret"] as? String, ret == "0" {
+                if let object = value["users"] {
+                    do {
+                        let data = try JSONSerialization.data(withJSONObject: object, options: .prettyPrinted)
+                        let decoder = JSONDecoder()
+                        let user = try decoder.decode(T.self, from: data)
+                        return user
+                    } catch {
+                        throw error
+                    }
+                } else {
+                    print(">>>>>>>>")
+                    throw SelfError.error
+                }
+            } else {
+                print("<<<<<<<")
+                throw SelfError.error
+            }
+        }, completionHandler: completionHandler)
+        return self
+    }
+    
 }
