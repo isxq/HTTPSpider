@@ -106,7 +106,7 @@ extension SpiDataRequest {
                             throw SpiError.responseSerializationFailed(reason: .jsonIsNotADictionary)
                         }
                     } else {
-                        let enc = CFStringConvertEncodingToNSStringEncoding(UInt32(CFStringEncodings.GB_2312_80.rawValue))
+                        let enc = CFStringConvertEncodingToNSStringEncoding(UInt32(CFStringEncodings.GB_18030_2000.rawValue))
                         let str = String(data: data, encoding: String.Encoding(rawValue: enc))
                         if let data = str?.data(using: .utf8){
                             let object = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
